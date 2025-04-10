@@ -46,7 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   return (
     <div
-      className={`w-[90vw] md:w-[25vw] xl:w-[23vw] border-1 ${
+      className={`w-[90vw] md:w-[25vw] xl:w-[25.5vw] border-1 ${
         !sidebar && "ml-5 mt-5"
       } rounded-xl border-gray-300 ${
         sidebar && " bg-white w-[100vw]"

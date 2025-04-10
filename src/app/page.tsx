@@ -230,7 +230,7 @@ export default function Home() {
             <span className="text-black">mark</span>
             <span className="text-orange-500">ia</span>
           </div>
-          {grid && <AlignJustify onClick={() => setSidebar(!sidebar)} />}
+          {grid && <AlignJustify onClick={() => setSidebar(!sidebar)} className="xl:hidden"/>}
         </div>
         <div className="flex items-center gap-3 md:justify-center">
           <div className="flex items-center gap-4 border-1 p-4 ml-2 rounded-2xl border-gray-300">
