@@ -1,5 +1,5 @@
 // src/app/components/FilterSearch.tsx
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 type FilterSearchProps = {
   owners: string[];
