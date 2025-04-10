@@ -19,12 +19,17 @@ interface SearchBarData {
 
 interface Source {
   law_firm: string;
+  law_firm_cleaned: string;
   status_type: string;
   first_use_anywhere_date?: string;
   search_bar: SearchBarData;
   registration_number: string;
   mark_description_description?: string[];
   class_codes: string[];
+  current_owner: string;
+  current_owner_cleaned: string;
+  attorney_name: string;
+  attorney_name_cleaned: string;
 }
 
 interface Hit {
@@ -58,6 +63,10 @@ interface ApiResponse {
 
 export default function Home() {
   const [selectedStatus, setSelectedStatus] = useState<string>("All");
+  const [selectedOwners, setSelectedOwners] = useState<string[]>([]);
+  const [selectedLawFirms, setSelectedLawFirms] = useState<string[]>([]);
+  const [selectedAttorneys, setSelectedAttorneys] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const statuses: Status[] = [
     { label: "All", color: "bg-blue-500" },
     { label: "Registered", color: "bg-green-500" },
@@ -127,14 +136,80 @@ export default function Home() {
     fetchData();
   }, []);
 
+  const filterData = (data: ApiResponse | null) => {
+    if (!data) return [];
+    
+    let filteredHits = data.body.hits.hits;
+
+    // Filter by search query
+    if (searchQuery.trim() !== "") {
+      const query = searchQuery.toLowerCase().trim();
+      filteredHits = filteredHits.filter(hit => {
+        const source = hit._source;
+        return (
+          source.law_firm?.toLowerCase().includes(query) ||
+          source.current_owner?.toLowerCase().includes(query) ||
+          source.attorney_name?.toLowerCase().includes(query) ||
+          source.registration_number?.toLowerCase().includes(query) ||
+          source.mark_description_description?.some(desc => 
+            desc?.toLowerCase().includes(query)
+          ) ||
+          source.search_bar.owner?.toLowerCase().includes(query)
+        );
+      });
+    }
+
+    // Filter by status
+    if (selectedStatus !== "All") {
+      filteredHits = filteredHits.filter(hit => {
+        const status = hit._source.status_type;
+        switch (selectedStatus) {
+          case "Registered":
+            return status === "registered";
+          case "Pending":
+            return status === "pending";
+          case "Abandoned":
+            return status === "abandoned";
+          case "Others":
+            return !["registered", "pending", "abandoned"].includes(status);
+          default:
+            return true;
+        }
+      });
+    }
+
+    // Filter by owners
+    if (selectedOwners.length > 0) {
+      filteredHits = filteredHits.filter(hit => 
+        selectedOwners.includes(hit._source.current_owner_cleaned)
+      );
+    }
+
+    // Filter by law firms
+    if (selectedLawFirms.length > 0) {
+      filteredHits = filteredHits.filter(hit => 
+        selectedLawFirms.includes(hit._source.law_firm_cleaned)
+      );
+    }
+
+    // Filter by attorneys
+    if (selectedAttorneys.length > 0) {
+      filteredHits = filteredHits.filter(hit => 
+        selectedAttorneys.includes(hit._source.attorney_name_cleaned)
+      );
+    }
+
+    return filteredHits;
+  };
+
   useEffect(() => {
     if (data) {
       setAttorneys(data.body.aggregations.attorneys.buckets || []);
       setOwners(data.body.aggregations.current_owners.buckets || []);
       setLawFirms(data.body.aggregations.law_firms.buckets || []);
-      setArr(data.body.hits.hits || []);
+      setArr(filterData(data));
     }
-  }, [data]);
+  }, [data, selectedStatus, selectedOwners, selectedLawFirms, selectedAttorneys, searchQuery]);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -164,10 +239,20 @@ export default function Home() {
               type="text"
               placeholder="Search"
               className="w-[60vw] md:w-[40vw] border-0 outline-none"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  setSearchQuery(e.currentTarget.value);
+                }
+              }}
             />
             <Camera className="hidden md:block" />
           </div>
-          <button className="bg-[#4380EC] p-4 px-6 rounded-2xl text-white">
+          <button 
+            className="bg-[#4380EC] p-4  xl:px-6 rounded-2xl text-white"
+            onClick={() => setSearchQuery(searchQuery)}
+          >
             Search
           </button>
         </div>
@@ -309,6 +394,12 @@ export default function Home() {
                 attorneys={attorneys}
                 grid={grid}
                 setGrid={setGrid}
+                selectedOwners={selectedOwners}
+                setSelectedOwners={setSelectedOwners}
+                selectedLawFirms={selectedLawFirms}
+                setSelectedLawFirms={setSelectedLawFirms}
+                selectedAttorneys={selectedAttorneys}
+                setSelectedAttorneys={setSelectedAttorneys}
               />
             </Modal>
           ) : (
@@ -323,6 +414,12 @@ export default function Home() {
               attorneys={attorneys}
               grid={grid}
               setGrid={setGrid}
+              selectedOwners={selectedOwners}
+              setSelectedOwners={setSelectedOwners}
+              selectedLawFirms={selectedLawFirms}
+              setSelectedLawFirms={setSelectedLawFirms}
+              selectedAttorneys={selectedAttorneys}
+              setSelectedAttorneys={setSelectedAttorneys}
             />
           )}
         </div>

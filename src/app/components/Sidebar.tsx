@@ -2,15 +2,14 @@ import React from "react";
 import FilterSearch from "./FilterSearch";
 import { X } from "lucide-react";
 
-// Define the types for the props
-type Status = {
+interface Status {
   label: string;
   color: string;
-};
+}
 
-type SidebarProps = {
+interface SidebarProps {
   sidebar: boolean;
-  setSidebar: (open: boolean) => void;
+  setSidebar: (value: boolean) => void;
   statuses: Status[];
   selectedStatus: string;
   setSelectedStatus: (status: string) => void;
@@ -18,8 +17,14 @@ type SidebarProps = {
   lawFirms: { key: string }[];
   attorneys: { key: string }[];
   grid: boolean;
-  setGrid: (val: boolean) => void;
-};
+  setGrid: (value: boolean) => void;
+  selectedOwners: string[];
+  setSelectedOwners: (owners: string[]) => void;
+  selectedLawFirms: string[];
+  setSelectedLawFirms: (firms: string[]) => void;
+  selectedAttorneys: string[];
+  setSelectedAttorneys: (attorneys: string[]) => void;
+}
 
 const Sidebar: React.FC<SidebarProps> = ({
   sidebar,
@@ -32,6 +37,12 @@ const Sidebar: React.FC<SidebarProps> = ({
   attorneys,
   grid,
   setGrid,
+  selectedOwners,
+  setSelectedOwners,
+  selectedLawFirms,
+  setSelectedLawFirms,
+  selectedAttorneys,
+  setSelectedAttorneys,
 }) => {
   return (
     <div
@@ -74,6 +85,12 @@ const Sidebar: React.FC<SidebarProps> = ({
           owners={owners.map((item) => item.key)}
           lawFirms={lawFirms.map((item) => item.key)}
           attorneys={attorneys.map((item) => item.key)}
+          selectedOwners={selectedOwners}
+          setSelectedOwners={setSelectedOwners}
+          selectedLawFirms={selectedLawFirms}
+          setSelectedLawFirms={setSelectedLawFirms}
+          selectedAttorneys={selectedAttorneys}
+          setSelectedAttorneys={setSelectedAttorneys}
         />
       </div>
 
