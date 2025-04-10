@@ -95,17 +95,7 @@ export default function Home() {
     // Cleanup
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
-  function ReturnWrapper({ children, sidebar, setSidebar }) {
-    if (sidebar) {
-      return (
-        <Modal isOpen={sidebar} handleClose={() => setSidebar(false)}>
-          {children}
-        </Modal>
-      );
-    } else {
-      return <>{children}</>; // Use a React Fragment to return children without a wrapper
-    }
-  }
+
   console.log("sidebar");
   return (
     <div>
