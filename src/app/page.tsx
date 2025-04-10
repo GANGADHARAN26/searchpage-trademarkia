@@ -74,7 +74,7 @@ export default function Home() {
   const [attorneys, setAttorneys] = useState<Bucket[]>([]);
   const [grid, setGrid] = useState<boolean>(true);
   const [arr, setArr] = useState<Hit[]>([]);
-  const [sidebar, setSidebar] = useState<boolean>(true);
+  const [sidebar, setSidebar] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
