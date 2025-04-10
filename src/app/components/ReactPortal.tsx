@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState, ReactNode } from "react";
+import React, { useLayoutEffect, useState, ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 // Function to create wrapper element with given ID and append it to the body
@@ -17,7 +17,7 @@ type ReactPortalProps = {
 export default function ReactPortal({
   children,
   wrapperId = "react-portal-wrapper",
-}: ReactPortalProps): JSX.Element | null {
+}: ReactPortalProps): React.ReactElement | null {
   const [wrapperElement, setWrapperElement] = useState<HTMLElement | null>(null);
 
   useLayoutEffect(() => {
