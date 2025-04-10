@@ -233,12 +233,12 @@ export default function Home() {
           {grid && <AlignJustify onClick={() => setSidebar(!sidebar)} />}
         </div>
         <div className="flex items-center gap-3 md:justify-center">
-          <div className="flex items-center gap-4 border-1 p-4 rounded-2xl border-gray-300">
+          <div className="flex items-center gap-4 border-1 p-4 ml-2 rounded-2xl border-gray-300">
             <Search className="hidden md:block" />
             <input
               type="text"
               placeholder="Search"
-              className="w-[60vw] md:w-[40vw] border-0 outline-none"
+              className="w-[58vw] md:w-[40vw] border-0 outline-none"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => {

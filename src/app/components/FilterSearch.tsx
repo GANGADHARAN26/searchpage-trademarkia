@@ -85,7 +85,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
           <button
             key={tab}
             onClick={() => handleTabClick(tab)}
-            className={`px-4 py-2 rounded-lg ${
+            className={`px-4 py-2 rounded-xl text-sm ${
               activeTab === tab ? 'bg-blue-500 text-white' : 'bg-gray-200'
             }`}
           >
