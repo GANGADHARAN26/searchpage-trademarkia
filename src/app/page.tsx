@@ -1,21 +1,9 @@
 "use client";
-import {
-  AlignJustify,
-  Camera,
-  CircleDot,
-  Dot,
-  FlaskRound,
-  Funnel,
-  Search,
-  X,
-} from "lucide-react";
+import { AlignJustify, Camera, Dot, FlaskRound, Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import Filter from "./components/Filter";
 import Loading from "./components/Loading";
 import Error from "./components/Error";
-import StatusFilter from "./components/StatusFilter";
-import TabsWithSearch from "./components/TabsWithSearch";
-import FilterSearch from "./components/FilterSearch";
+
 import Mark from "../../public/mark.png";
 import Image from "next/image";
 import Modal from "./components/Model";
@@ -29,7 +17,6 @@ export default function Home() {
     { label: "Abandoned", color: "bg-red-500" },
     { label: "Others", color: "bg-gray-500" },
   ];
-  const [change, setChange] = useState(true);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -87,7 +74,7 @@ export default function Home() {
     };
 
     fetchData();
-  }, [change]);
+  }, []);
   useEffect(() => {
     setAttorneys(data?.body.aggregations?.attorneys?.buckets || []);
     setOwners(data?.body.aggregations?.current_owners?.buckets || []);
@@ -119,7 +106,7 @@ export default function Home() {
       return <>{children}</>; // Use a React Fragment to return children without a wrapper
     }
   }
-  console.log("sidebar")
+  console.log("sidebar");
   return (
     <div>
       {/* Headerserction */}
@@ -342,7 +329,7 @@ export default function Home() {
             //   </div>
             // </div>
             // </ReturnWrapper>
-            (sidebar ? (
+            sidebar ? (
               <Modal isOpen={sidebar} handleClose={() => setSidebar(false)}>
                 <Sidebar
                   sidebar={sidebar}
@@ -370,7 +357,8 @@ export default function Home() {
                 grid={grid}
                 setGrid={setGrid}
               />
-            ))}
+            )
+          }
         </div>
       </div>
     </div>
