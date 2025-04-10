@@ -1,8 +1,27 @@
-import React from 'react';
-import FilterSearch from './FilterSearch';
-import { X } from 'lucide-react'; // Assuming you're using lucide for X icon
+import React from "react";
+import FilterSearch from "./FilterSearch";
+import { X } from "lucide-react";
 
-const Sidebar = ({
+// Define the types for the props
+type Status = {
+  label: string;
+  color: string;
+};
+
+type SidebarProps = {
+  sidebar: boolean;
+  setSidebar: (open: boolean) => void;
+  statuses: Status[];
+  selectedStatus: string;
+  setSelectedStatus: (status: string) => void;
+  owners: { key: string }[];
+  lawFirms: { key: string }[];
+  attorneys: { key: string }[];
+  grid: boolean;
+  setGrid: (val: boolean) => void;
+};
+
+const Sidebar: React.FC<SidebarProps> = ({
   sidebar,
   setSidebar,
   statuses,
@@ -37,9 +56,7 @@ const Sidebar = ({
               key={status.label}
               onClick={() => setSelectedStatus(status.label)}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 text-sm border-gray-300 ${
-                selectedStatus === status.label
-                  ? "bg-gray-300"
-                  : "bg-white"
+                selectedStatus === status.label ? "bg-gray-300" : "bg-white"
               }`}
             >
               <span
@@ -65,17 +82,13 @@ const Sidebar = ({
         <p className="pb-3">Display</p>
         <div className="flex justify-between rounded-xl p-5 bg-gray-300">
           <button
-            className={`flex justify-center px-7 ${
-              grid && "bg-white"
-            } p-3 rounded-xl`}
+            className={`flex justify-center px-7 ${grid && "bg-white"} p-3 rounded-xl`}
             onClick={() => setGrid(true)}
           >
             Grid View
           </button>
           <button
-            className={`flex justify-center px-7 ${
-              !grid && "bg-white"
-            } p-3 rounded-xl`}
+            className={`flex justify-center px-7 ${!grid && "bg-white"} p-3 rounded-xl`}
             onClick={() => setGrid(false)}
           >
             List View

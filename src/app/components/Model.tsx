@@ -1,46 +1,46 @@
-import React, { useEffect, useRef } from "react"; 
-import classes from "../components/Modal.module.css"; 
-import ReactPortal from "./ReactPortal"; 
+import React, { useEffect, useRef, ReactNode } from "react";
+import classes from "../components/Modal.module.css";
+import ReactPortal from "./ReactPortal";
 
+type ModalProps = {
+  children: ReactNode;
+  isOpen: boolean;
+  handleClose: (event: MouseEvent | TouchEvent) => void;
+};
 
-function Modal({ children, isOpen, handleClose }) {
-  const modalRef = useRef(); // Ref for modal element
+const Modal: React.FC<ModalProps> = ({ children, isOpen, handleClose }) => {
+  const modalRef = useRef<HTMLDivElement>(null); // Ref for modal element
 
   // Effect to handle click outside modal to close
   useEffect(() => {
-    function listener(event) {
-      if (!modalRef.current || modalRef.current.contains(event.target)) {
+    function listener(event: MouseEvent | TouchEvent) {
+      if (!modalRef.current || modalRef.current.contains(event.target as Node)) {
         return;
       }
 
       handleClose(event);
     }
 
-    document.addEventListener("mousedown", listener); // Adding event listener for mouse click
-    document.addEventListener("touchstart", listener); // Adding event listener for touch
+    document.addEventListener("mousedown", listener); // Mouse click
+    document.addEventListener("touchstart", listener); // Touch event
 
     return () => {
-      document.removeEventListener("mousedown", listener); // Removing event listener for mouse click
-      document.removeEventListener("touchstart", listener); // Removing event listener for touch
+      document.removeEventListener("mousedown", listener);
+      document.removeEventListener("touchstart", listener);
     };
-  }, [handleClose, modalRef]); // Dependencies for effect
+  }, [handleClose]);
 
-  // If modal is not open, return null
   if (!isOpen) return null;
 
-  // Rendering the modal
   return (
     <ReactPortal wrapperId="timewrapper">
-      {" "}
-      {/* Rendering modal using ReactPortal for better performance */}
       <div className={classes.modal}>
         <div ref={modalRef} id="modal" className={classes.modalcontent}>
-          {" "}
-          {/* Ref for modal content */}
-          {children} {/* Rendering children inside modal */}
+          {children}
         </div>
       </div>
     </ReactPortal>
   );
-}
-export default Modal; // Exporting Modal component
+};
+
+export default Modal;

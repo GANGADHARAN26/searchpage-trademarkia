@@ -1,41 +1,44 @@
-import  { useLayoutEffect, useState } from "react"; 
+import { useLayoutEffect, useState, ReactNode } from "react";
 import { createPortal } from "react-dom";
 
-
 // Function to create wrapper element with given ID and append it to the body
-function createWrapperIDAndAppendBody(wrapperId) {
-  const wrapperElement = document.createElement("div"); // Creating a div element
-  wrapperElement.setAttribute("id", wrapperId); // Setting ID attribute
-  document.body.appendChild(wrapperElement); // Appending the div to the body
-  return wrapperElement; // Returning the created wrapper element
+function createWrapperIDAndAppendBody(wrapperId: string): HTMLDivElement {
+  const wrapperElement = document.createElement("div");
+  wrapperElement.setAttribute("id", wrapperId);
+  document.body.appendChild(wrapperElement);
+  return wrapperElement;
 }
+
+type ReactPortalProps = {
+  children: ReactNode;
+  wrapperId?: string;
+};
 
 export default function ReactPortal({
   children,
   wrapperId = "react-portal-wrapper",
-}) {
-  const [wrapperElement, setWrapperElement] = useState(null); 
+}: ReactPortalProps): JSX.Element | null {
+  const [wrapperElement, setWrapperElement] = useState<HTMLElement | null>(null);
 
   useLayoutEffect(() => {
-    let element = document.getElementById(wrapperId); // Trying to find existing wrapper element
-    let systemCreated = false; // Flag to track if the element was created by the system
+    let element = document.getElementById(wrapperId);
+    let systemCreated = false;
+
     if (!element) {
-      systemCreated = true; // If wrapper element doesn't exist, mark it as system created
-      element = createWrapperIDAndAppendBody(wrapperId); // Create wrapper element and append it to body
+      systemCreated = true;
+      element = createWrapperIDAndAppendBody(wrapperId);
     }
-    setWrapperElement(element); // Set the wrapper element in state
+
+    setWrapperElement(element);
+
     return () => {
-      // Cleanup function to remove programatically created element
-      if (systemCreated && element.parentNode) {
-        element.parentNode.removeChild(element); // Removing the element from its parent node
+      if (systemCreated && element?.parentNode) {
+        element.parentNode.removeChild(element);
       }
     };
-  }, [wrapperId]); // Dependency array for useEffect hook
+  }, [wrapperId]);
 
-  // If wrapper element is not yet available, return null
   if (wrapperElement === null) return null;
 
-  // Rendering children inside portal using createPortal function
   return createPortal(children, wrapperElement);
 }
-
