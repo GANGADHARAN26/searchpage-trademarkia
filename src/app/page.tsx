@@ -7,7 +7,7 @@ import Mark from "../../public/mark.png";
 import Image from "next/image";
 import Modal from "./components/Model";
 import Sidebar from "./components/Sidebar";
-
+import { Analytics } from "@vercel/analytics/react"
 interface Status {
   label: string;
   color: string;
@@ -223,6 +223,7 @@ export default function Home() {
 
   return (
     <div>
+      <Analytics />
       <div className="py-5 px-2 xl:px-5 items-center sm:flex sm:justify-between border-b-2 border-b-gray-300 shadow-sm">
         <div className={`${grid && "flex justify-between px-4"}`}>
           <div className="text-xl xl:text-3xl font-semibold text-gray-700 items-center pb-3">
