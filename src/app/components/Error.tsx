@@ -14,7 +14,7 @@ const Error: React.FC<ErrorProps> = ({ error, reset }) => {
   return (
     <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
       <strong className="font-bold">Error: </strong>
-      <span className="block sm:inline">{errorMessage}</span>
+      <span className="block sm:inline">  {typeof errorMessage === "string" ? errorMessage : errorMessage.message}</span>
       {reset && (
         <button
           onClick={reset}
