@@ -1,4 +1,5 @@
-import { useState, ChangeEvent } from 'react';
+// src/app/components/FilterSearch.tsx
+import { useState } from 'react';
 
 type FilterSearchProps = {
   owners: string[];
@@ -8,7 +9,7 @@ type FilterSearchProps = {
 
 const FilterSearch = ({ owners, lawFirms, attorneys }: FilterSearchProps) => {
   const [activeTab, setActiveTab] = useState<'Owners' | 'Law Firms' | 'Attorneys'>('Owners');
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedOwners, setSelectedOwners] = useState<string[]>([]);
   const [selectedLawFirms, setSelectedLawFirms] = useState<string[]>([]);
   const [selectedAttorneys, setSelectedAttorneys] = useState<string[]>([]);
